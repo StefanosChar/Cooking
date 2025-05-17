@@ -51,9 +51,19 @@ app.post('/login', async (req, res) => {
     }
 
     const user = rows[0];
+
+    console.log('User from DB:', user);
+    console.log('Password from client:', password);
+    console.log('Password hash from DB:', user.password_hash);
     
     // Compare passwords
-    const match = await bcrypt.compare(password, user.password_hash);
+    let hash = user.password_hash;
+    if (hash.startsWith('$2y$')) {
+      hash = '$2b$' + hash.slice(4);
+    }
+    const match = await bcrypt.compare(password, hash);
+
+    console.log('Password match result:', match);
     if (!match) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -85,6 +95,38 @@ app.get('/check-auth', (req, res) => {
     res.json({ authenticated: true, user: req.session.user });
   } else {
     res.json({ authenticated: false });
+  }
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if username or email already exists
+    const [existing] = await pool.query(
+      'SELECT * FROM users WHERE username = ? OR email = ?',
+      [username, email]
+    );
+    if (existing.length > 0) {
+      return res.status(409).json({ error: 'Username or email already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new user
+    await pool.query(
+      'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
+      [username, email, hashedPassword]
+    );
+
+    res.status(201).json({ message: 'User registered successfully!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
