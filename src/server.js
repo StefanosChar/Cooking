@@ -131,6 +131,6 @@ app.post('/register', async (req, res) => {
 });
 
 const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '192.168.2.2', () => {
+  console.log(`Server running on http://192.168.2.2:${PORT}`);
 });
