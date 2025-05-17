@@ -6,20 +6,24 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3001/api/login', {
+  e.preventDefault();
+  try {
+    const response = await axios.post(
+      'http://localhost:3001/login', // <-- Correct endpoint
+      {
         username: credentials.username,
         password: credentials.password
-      });
+      },
+      { withCredentials: true } // <-- Important for session cookies!
+    );
 
-      // Store JWT in localStorage
-      localStorage.setItem('authToken', response.data.token);
-      window.location.href = '/recipes'; // Redirect to protected route
-    } catch (err) {
-      setError('Invalid username or password');
-    }
-  };
+    // You can store user info if needed, or just redirect
+    // localStorage.setItem('user', JSON.stringify(response.data.user));
+    window.location.href = '/recipes'; // Redirect to protected route
+  } catch (err) {
+    setError('Invalid username or password');
+  }
+};
 
   return (
     <div className="auth-container">
