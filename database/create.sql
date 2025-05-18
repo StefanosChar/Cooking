@@ -1,8 +1,6 @@
--- Create database
 CREATE DATABASE IF NOT EXISTS cooking_site;
 USE cooking_site;
 
--- Users table
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -14,7 +12,6 @@ CREATE TABLE users (
     profile_picture VARCHAR(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Recipes table
 CREATE TABLE recipes (
     recipe_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -31,13 +28,11 @@ CREATE TABLE recipes (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Categories table
 CREATE TABLE categories (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Recipe-Category junction table
 CREATE TABLE recipe_categories (
     recipe_id INT NOT NULL,
     category_id INT NOT NULL,
@@ -46,7 +41,6 @@ CREATE TABLE recipe_categories (
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Indexes for better performance
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_recipes_title ON recipes(title);
 CREATE INDEX idx_categories_name ON categories(name);
