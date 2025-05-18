@@ -24,6 +24,8 @@ CREATE TABLE recipes (
     instructions TEXT NOT NULL,
     prep_time INT DEFAULT NULL,
     difficulty ENUM('Easy', 'Medium', 'Hard') DEFAULT 'Medium',
+    image_url VARCHAR(255) DEFAULT NULL,
+    rating FLOAT DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
@@ -48,8 +50,3 @@ CREATE TABLE recipe_categories (
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_recipes_title ON recipes(title);
 CREATE INDEX idx_categories_name ON categories(name);
-
--- Optional: Insert a test user (password: Test1234!)
--- The password_hash here is for 'Test1234!' using bcrypt (for demonstration)
-INSERT INTO users (username, email, password_hash) 
-VALUES ('user', 'test@test.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
