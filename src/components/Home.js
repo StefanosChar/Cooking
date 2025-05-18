@@ -78,10 +78,9 @@ const Home = ({ auth }) => (
         className="text-center position-absolute top-50 start-50 translate-middle"
         style={{ zIndex: 2, width: "100vw", pointerEvents: "none" }}
       >
-        <h1 className="display-4 fw-bold text-white text-shadow">Welcome to CookBook</h1>
+        <h1 className="display-4 fw-bold text-white text-shadow">Καλώς ήρθατε στο CookBook</h1>
         <p className="lead mb-4 text-white text-shadow">
-          Discover, share, and enjoy delicious recipes from our community.<br />
-          Sign in to upload your own creations!
+          Ανακάλυψε, μοιράσου και απόλαυσε νόστιμες συνταγές από την κοινότητά μας.
         </p>
         <div style={{ pointerEvents: "auto" }}>
         </div>

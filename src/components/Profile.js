@@ -36,15 +36,6 @@ const Profile = ({ auth }) => {
           </button>
         </div>
       </div>
-      <footer className="bg-white text-center py-3 shadow-sm mt-auto">
-        &copy; {new Date().getFullYear()} CookBook. All rights reserved.
-      </footer>
-      <style>{`
-        .profile-card {
-          max-width: 380px;
-          margin: 0 auto;
-        }
-      `}</style>
     </div>
   );
 };

@@ -66,7 +66,7 @@ const NavBar = ({ auth }) => (
             "Login"
           )}
         </Link>
-        <Link className="btn royal-btn" to="/recipes">View Recipes</Link>
+        <Link className="btn royal-btn" to="/recipes">Συνταγές</Link>
       </div>
     </div>
   </nav>

@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
-import NavBar from './NavBar'; // Adjust path if needed
+import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
-// Example mock data (replace with API calls in production)
+// Mock κατηγορίες στα Ελληνικά
 const mockCategories = [
-  "Italian", "American", "Mexican", "Thai", "Chinese", "Vegetarian", "Desserts", "Quick Meals"
+  "Ιταλική", "Αμερικάνικη", "Μεξικάνικη", "Ταϊλανδέζικη", "Κινέζικη", "Χορτοφαγικά", "Γλυκά", "Γρήγορα Γεύματα"
 ];
 
+// Mock συνταγές στα Ελληνικά
 const mockRecipes = [
   {
     id: 1,
-    title: "Spaghetti Carbonara",
+    title: "Σπαγγέτι Καρμπονάρα",
     image_url: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
     rating: 4.5,
     prep_time: 25,
-    difficulty: "Medium",
-    categories: ["Italian", "Pasta", "Quick Meals"]
+    difficulty: "Μέτριο",
+    categories: ["Ιταλική", "Ζυμαρικά", "Γρήγορα Γεύματα"]
   },
   {
     id: 2,
-    title: "Classic Beef Burger",
+    title: "Κλασικό Μπέργκερ Μοσχαρίσιο",
     image_url: "https://images.unsplash.com/photo-1550547660-d9450f859349",
     rating: 5.0,
     prep_time: 30,
-    difficulty: "Easy",
-    categories: ["American", "Burgers", "BBQ"]
+    difficulty: "Εύκολο",
+    categories: ["Αμερικάνικη", "Μπέργκερ", "BBQ"]
   },
   {
     id: 3,
-    title: "Thai Green Curry",
+    title: "Πράσινο Ταϊλανδέζικο Κάρυ",
     image_url: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc",
     rating: 4.5,
     prep_time: 35,
-    difficulty: "Medium",
-    categories: ["Thai", "Curry", "Chicken"]
+    difficulty: "Μέτριο",
+    categories: ["Ταϊλανδέζικη", "Κάρυ", "Κοτόπουλο"]
   }
 ];
 
@@ -49,7 +51,6 @@ const Recipes = ({ auth }) => {
       <NavBar auth={auth} />
 
       <div className="container py-4 flex-grow-1">
-        {/* Inline CSS for hover animation and category buttons */}
         <style>{`
           .recipe-card {
             transition: 
@@ -57,6 +58,8 @@ const Recipes = ({ auth }) => {
               box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
             cursor: pointer;
             z-index: 1;
+            text-decoration: none;
+            color: inherit;
           }
           .recipe-card:hover {
             transform: scale(1.04) translateY(-4px);
@@ -87,7 +90,7 @@ const Recipes = ({ auth }) => {
           }
         `}</style>
 
-        <h2 className="fw-bold mb-4">Popular Categories</h2>
+        <h2 className="fw-bold mb-4">Δημοφιλείς Κατηγορίες</h2>
         <div className="d-flex gap-2 flex-wrap mb-4">
           {mockCategories.map(cat => (
             <button
@@ -100,44 +103,45 @@ const Recipes = ({ auth }) => {
           ))}
         </div>
 
-        <h3 className="fw-bold mb-4">Featured Recipes</h3>
+        <h3 className="fw-bold mb-4">Προτεινόμενες Συνταγές</h3>
         <div className="row g-4">
           {filteredRecipes.map(recipe => (
             <div className="col-md-4" key={recipe.id}>
-              <div className="card recipe-card h-100 shadow-sm">
-                <img
-                  src={recipe.image_url}
-                  alt={recipe.title}
-                  className="card-img-top"
-                  style={{ height: 180, objectFit: 'cover' }}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{recipe.title}</h5>
-                  <div className="mb-2">
-                    <span className="me-3"><i className="bi bi-clock"></i> {recipe.prep_time} min</span>
-                    <span className="me-3"><i className="bi bi-bar-chart"></i> {recipe.difficulty}</span>
-                    <span><i className="bi bi-star-fill text-warning"></i> {recipe.rating}</span>
-                  </div>
-                  <div>
-                    {recipe.categories.map(tag => (
-                      <span key={tag} className="badge bg-light text-dark border me-1">{tag}</span>
-                    ))}
+              <Link
+                to={`/recipes/${recipe.id}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div className="card recipe-card h-100 shadow-sm">
+                  <img
+                    src={recipe.image_url}
+                    alt={recipe.title}
+                    className="card-img-top"
+                    style={{ height: 180, objectFit: 'cover' }}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{recipe.title}</h5>
+                    <div className="mb-2">
+                      <span className="me-3"><i className="bi bi-clock"></i> {recipe.prep_time} λεπτά</span>
+                      <span className="me-3"><i className="bi bi-bar-chart"></i> {recipe.difficulty}</span>
+                      <span><i className="bi bi-star-fill text-warning"></i> {recipe.rating}</span>
+                    </div>
+                    <div>
+                      {recipe.categories.map(tag => (
+                        <span key={tag} className="badge bg-light text-dark border me-1">{tag}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
           {filteredRecipes.length === 0 && (
             <div className="col-12 text-center text-muted">
-              <p>No recipes found for this category.</p>
+              <p>Δεν βρέθηκαν συνταγές για αυτή την κατηγορία.</p>
             </div>
           )}
         </div>
       </div>
-
-      <footer className="bg-white text-center py-3 shadow-sm mt-auto">
-        &copy; {new Date().getFullYear()} CookBook. All rights reserved.
-      </footer>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import Recipes from './components/Recipes';
 import Home from './components/Home'; // <-- Import Home
 import useAuth from './useAuth';
 import Profile from './components/Profile';
+import RecipesDetails from './components/RecipesDetails';
 
 function App() {
   const auth = useAuth();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Home auth={auth} />} />
         <Route path="/login" element={<Login auth={auth}/>} />
         <Route path="/profile" element={<Profile auth={auth} />} />
+        <Route path="/recipes/:id" element={<RecipesDetails auth={auth} />} />
         <Route path="/recipes" element={
             <PrivateRoute>
               <Recipes auth={auth} />

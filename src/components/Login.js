@@ -78,13 +78,11 @@ const Login = ({ auth }) => {
           ))}
           {/* SVG Blob Indicator */}
           <div className="auth-blob" style={{ left: blobLeft }}>
-            <svg width="60" height="30" viewBox="0 0 60 32">
+            <svg width="48" height="24" viewBox="0 0 48 24">
               <path
-                d="M0,32 A30,30 0 0 1 60,32"
+                d="M0,0 A24,24 0 0 0 48,0"
                 fill="#23272b"
-                stroke="none"
               />
-              <circle cx="30" cy="16" r="10" fill="#fff" />
             </svg>
           </div>
         </div>
