@@ -17,9 +17,8 @@ const Home = ({ auth }) => (
 
     <main
       className="flex-grow-1 d-flex align-items-center justify-content-center position-relative"
-      style={{ minHeight: 'calc(100vh - 56px)' }} // 56px is typical navbar height
+      style={{ minHeight: 'calc(100vh - 56px)' }}
     >
-      {/* Fullscreen Carousel */}
       <div
         className="position-absolute top-0 start-0 w-100 h-100"
         style={{
@@ -72,8 +71,6 @@ const Home = ({ auth }) => (
       ))}
     </Carousel>
       </div>
-
-      {/* Overlay welcome message */}
       <div
         className="text-center position-absolute top-50 start-50 translate-middle"
         style={{ zIndex: 2, width: "100vw", pointerEvents: "none" }}
@@ -86,8 +83,6 @@ const Home = ({ auth }) => (
         </div>
       </div>
     </main>
-
-    {/* Inline CSS for text shadow */}
     <style>{`
       .text-shadow {
         text-shadow: 0 2px 8px rgba(0,0,0,0.5);

@@ -1,87 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import NavBar from './NavBar';
 
-// Mock συνταγές στα Ελληνικά
-const Recipe = [
-  {
-    id: 1,
-    title: "Σπαγγέτι Καρμπονάρα",
-    image_url: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-    rating: 4.5,
-    prep_time: 25,
-    difficulty: "Μέτριο",
-    categories: ["Ιταλική", "Ζυμαρικά", "Γρήγορα Γεύματα"]
-  },
-  {
-    id: 2,
-    title: "Κλασικό Μπέργκερ Μοσχαρίσιο",
-    image_url: "https://images.unsplash.com/photo-1550547660-d9450f859349",
-    rating: 5.0,
-    prep_time: 30,
-    difficulty: "Εύκολο",
-    categories: ["Αμερικάνικη", "Μπέργκερ", "BBQ"]
-  },
-  {
-    id: 3,
-    title: "Πράσινο Ταϊλανδέζικο Κάρυ",
-    image_url: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc",
-    rating: 4.5,
-    prep_time: 35,
-    difficulty: "Μέτριο",
-    categories: ["Ταϊλανδέζικη", "Κάρυ", "Κοτόπουλο"]
-  },
-  {
-    id: 4,
-    title: "Μπάρες παγωτού Dubai chocolate",
-    image_url: "/ScreenshotDubaiChocolate.webp",
-    rating: 5.0,
-    prep_time: 15,
-    difficulty: "Εύκολο",
-    categories: ["Γλυκά", "Φυστίκι", "Ψυγείου", "Γρήγορα Γεύματα"]
-  },
-  {
-    id: 5,
-    title: "Μιλφέιγ με παγωτό",
-    image_url: "/MilfeigIcecream.webp",
-    rating: 4.5,
-    prep_time: 20,
-    difficulty: "Εύκολο",
-    categories: ["Γλυκά", "Γαλλική Κουζίνα", "Παγωτά", "Γρήγορα Γεύματα"]
-  },
-  {
-    id: 6,
-    title: "Καραμελωμένα chicken strips",
-    image_url: "/ChickenStrips.webp",
-    rating: 5.0,
-    prep_time: 20,
-    difficulty: "Εύκολο",
-    categories: ["Μεξικάνικη", "Κοτόπουλο", "Γρήγορα Γεύματα"]
-  },
-  {
-    id: 7,
-    title: "Χοιρινά σουβλάκια BBQ από ψαρονέφρι με smashed potatoes",
-    image_url: "/Soublakia.webp",
-    rating: 5.0,
-    prep_time: 45,
-    difficulty: "Μέτριο",
-    categories: ["Ελληνική Κουζίνα", "Κοτόπουλο", "Πατάτες" , "BBQ"]
-  }
-];
-
-// Αυτόματα όλες οι κατηγορίες που υπάρχουν στις συνταγές (μοναδικές και ταξινομημένες)
-const allCategories = Array.from(
-  new Set(
-    Recipe.flatMap(recipe => recipe.categories)
-  )
-).sort();
-
 const Recipes = ({ auth }) => {
+  const [recipes, setRecipes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [recipes] = useState(Recipe);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/recipes')
+      .then(res => {
+        console.log('Recipes Data:', res.data);
+        setRecipes(res.data);
+      })
+      .catch(console.error);
+  }, []);
+
+  const allCategories = recipes?.length > 0 
+    ? Array.from(new Set(recipes.flatMap(recipe => recipe.categories || []))).sort()
+    : [];
 
   const filteredRecipes = selectedCategory
-    ? recipes.filter(recipe => recipe.categories.includes(selectedCategory))
+    ? recipes.filter(recipe => recipe.categories?.includes(selectedCategory))
     : recipes;
 
   return (

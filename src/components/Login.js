@@ -40,7 +40,6 @@ const Login = ({ auth }) => {
         setError("Λανθασμένο όνομα χρήστη ή κωδικός.");
       }
     } else {
-      // Register
       try {
         await axios.post(
           "http://localhost:3001/register",
@@ -58,7 +57,6 @@ const Login = ({ auth }) => {
     }
   };
 
-  // For the animated blob, position based on activeTab
   const tabIdx = TABS.findIndex((t) => t.key === activeTab);
   const blobLeft = tabIdx === 0 ? "calc(25% - 30px)" : "calc(75% - 30px)";
 
@@ -76,7 +74,6 @@ const Login = ({ auth }) => {
               {tab.label}
             </div>
           ))}
-          {/* SVG Blob Indicator */}
           <div className="auth-blob" style={{ left: blobLeft }}>
             <svg width="48" height="24" viewBox="0 0 48 24">
               <path
