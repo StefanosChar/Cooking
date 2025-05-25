@@ -57,7 +57,7 @@ CREATE TABLE `comment_likes` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `comment_likes_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE CASCADE,
   CONSTRAINT `comment_likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `comment_likes` (
 
 LOCK TABLES `comment_likes` WRITE;
 /*!40000 ALTER TABLE `comment_likes` DISABLE KEYS */;
-INSERT INTO `comment_likes` VALUES (77,3,8,'2025-05-24 21:29:20'),(78,2,8,'2025-05-24 21:29:20'),(79,4,6,'2025-05-24 21:29:32'),(80,3,6,'2025-05-24 21:29:33'),(82,4,8,'2025-05-24 21:59:44');
+INSERT INTO `comment_likes` VALUES (77,3,8,'2025-05-24 21:29:20'),(78,2,8,'2025-05-24 21:29:20'),(79,4,6,'2025-05-24 21:29:32'),(80,3,6,'2025-05-24 21:29:33'),(82,4,8,'2025-05-24 21:59:44'),(83,6,8,'2025-05-25 19:48:10'),(85,5,8,'2025-05-25 19:51:59');
 /*!40000 ALTER TABLE `comment_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `comments` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`),
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,8 +97,39 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (2,2,8,'Πολύ ωραία συνταγή!!!','2025-05-24 20:13:13'),(3,2,6,'Συμφωνώ, είναι πολύ ωραία και εύκολη συνταγή!','2025-05-24 20:17:05'),(4,2,8,'Ξαναδοκίμασα την συνταγή και μου βγήκε ακόμα πιο ωραία αυτή την φορά.','2025-05-24 20:29:05'),(5,5,8,'Ωραία και φθηνή λύση για την dubai chocolate !','2025-05-24 20:29:41');
+INSERT INTO `comments` VALUES (2,2,8,'Πολύ ωραία συνταγή!!!','2025-05-24 20:13:13'),(3,2,6,'Συμφωνώ, είναι πολύ ωραία και εύκολη συνταγή!','2025-05-24 20:17:05'),(4,2,8,'Ξαναδοκίμασα την συνταγή και μου βγήκε ακόμα πιο ωραία αυτή την φορά.','2025-05-24 20:29:05'),(5,5,8,'Ωραία και φθηνή λύση για την dubai chocolate !','2025-05-24 20:29:41'),(6,3,8,'Φοβερό Burger!','2025-05-25 19:48:06'),(7,4,8,'Το δοκίμασα και ήταν πιο νόστιμο απ\' ότι περίμενα. ','2025-05-25 19:48:45'),(8,8,8,'Λίγο δύσκολο να γίνει αλλά έγινε τέλειο!','2025-05-25 19:49:33'),(9,8,8,'Το ξαναδοκίμασα και σίγουρα θα το δείξω και αλλού','2025-05-25 19:50:46'),(10,7,8,'Αν δεν ήταν καραμελωμένα δεν θα ήταν τόσο ωραία όπως τώρα.','2025-05-25 19:52:28'),(11,7,8,'Σίγουρα θα το προτείνω και αλλού!','2025-05-25 19:52:37'),(12,6,8,'Είναι μια πιο ωραία version του απλού μιλφέιγ','2025-05-25 19:53:08'),(13,5,8,'Το ιδανικό γλυκό για όταν έρχεται κόσμος στο σπίτι!','2025-05-25 19:53:43');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `plan_meals`
+--
+
+DROP TABLE IF EXISTS `plan_meals`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `plan_meals` (
+  `meal_id` int NOT NULL AUTO_INCREMENT,
+  `plan_id` int NOT NULL,
+  `day` varchar(20) NOT NULL,
+  `meal_type` varchar(20) NOT NULL,
+  `recipe_id` int NOT NULL,
+  PRIMARY KEY (`meal_id`),
+  KEY `plan_id` (`plan_id`),
+  KEY `recipe_id` (`recipe_id`),
+  CONSTRAINT `plan_meals_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `weekly_plans` (`plan_id`) ON DELETE CASCADE,
+  CONSTRAINT `plan_meals_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `plan_meals`
+--
+
+LOCK TABLES `plan_meals` WRITE;
+/*!40000 ALTER TABLE `plan_meals` DISABLE KEYS */;
+INSERT INTO `plan_meals` VALUES (1,1,'Δευτέρα','Μεσημεριανό',3),(2,1,'Τρίτη','Μεσημεριανό',7),(3,1,'Τετάρτη','Μεσημεριανό',8),(4,1,'Δευτέρα','Βραδινό',5),(5,2,'Δευτέρα','Μεσημεριανό',3),(6,2,'Τρίτη','Μεσημεριανό',7),(7,2,'Τετάρτη','Μεσημεριανό',8),(8,2,'Δευτέρα','Βραδινό',5),(9,3,'Δευτέρα','Μεσημεριανό',3),(10,3,'Τρίτη','Μεσημεριανό',7),(11,3,'Τετάρτη','Μεσημεριανό',8),(12,3,'Δευτέρα','Βραδινό',5);
+/*!40000 ALTER TABLE `plan_meals` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -197,6 +228,33 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (2,'newuser','newuser@test.com','$2b$10$pwy.UTRBF7Wgv1xLROlY2ORWIPuE2Mxvf2sMt1u8jfrf23uh0ygEG','2025-05-17 19:35:10','2025-05-17 19:35:10',1,NULL),(3,'aek21','aek21@aekara.com','$2b$10$FX7.F4cnlV3.zxjbazOAZOf5hvTQqm9mI9ZVJlEi0aMJSqkpsC/mC','2025-05-17 20:36:54','2025-05-17 20:36:54',1,NULL),(4,'Stefanos','stef@stef.com','$2b$10$RZHlupMqyak/BsHHFIJYxuAGrdWgMyPdSH6kRQqht1zbsBBy1QXmO','2025-05-17 21:37:07','2025-05-17 21:37:07',1,NULL),(5,'ole','ole@ole.com','$2b$10$OD8avWa9SDhetSWLeygQKulgjrcnEYypeiEaJ6wph49vhqkdKMaY.','2025-05-18 19:28:09','2025-05-18 19:28:09',1,NULL),(6,'test','test@test.com','$2b$10$BBoBcwlGCvgP8zf.8gaRde..bMukTq95HyHv0YXh6BTAcaS70EVSe','2025-05-24 18:18:44','2025-05-24 18:18:44',1,NULL),(7,'qwerty','qwerty@gmail.com','$2b$10$wj7F2unCUa0Hnu3kthOujuFNkmmT5YD4VqETsDyygV9nSiDrht3q2','2025-05-24 20:55:00','2025-05-24 20:55:00',1,NULL),(8,'admin1','admin@admin.com','$2b$10$5xNMF7RXShExW.6NnM4U9.bR98C5Phisrm51PVwVdgF5CuWKtgc..','2025-05-24 21:49:55','2025-05-24 23:56:17',1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `weekly_plans`
+--
+
+DROP TABLE IF EXISTS `weekly_plans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `weekly_plans` (
+  `plan_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`plan_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `weekly_plans_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `weekly_plans`
+--
+
+LOCK TABLES `weekly_plans` WRITE;
+/*!40000 ALTER TABLE `weekly_plans` DISABLE KEYS */;
+INSERT INTO `weekly_plans` VALUES (1,8,'2025-05-25 19:27:10'),(2,8,'2025-05-25 19:28:11'),(3,8,'2025-05-25 19:28:20');
+/*!40000 ALTER TABLE `weekly_plans` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -207,4 +265,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-25  1:12:54
+-- Dump completed on 2025-05-25 23:17:09
