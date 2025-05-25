@@ -135,6 +135,9 @@ const Profile = ({ auth }) => {
           <button className="btn btn-outline-secondary mb-4 w-100" onClick={() => setShowPasswordModal(true)}>
             Αλλαγή Password
           </button>
+          <button className="btn btn-outline-success mb-4 w-100" onClick={() => navigate("/weekly-planner")}>
+            Εβδομαδιαίο Πρόγραμμα
+          </button>
           <button className="btn btn-danger px-4 w-100" onClick={handleLogout}>
             Αποσύνδεση
           </button>

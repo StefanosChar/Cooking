@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import NavBar from './NavBar';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaStar } from "react-icons/fa";
 
 const RecipesDetails = ({ auth }) => {
   const { id } = useParams();
@@ -9,6 +10,13 @@ const RecipesDetails = ({ auth }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [likeLoading, setLikeLoading] = useState({});
+  const [myCommentCount, setMyCommentCount] = useState(0);
+
+  useEffect(() => {
+  axios.get('http://localhost:3001/my-comment-count', { withCredentials: true })
+    .then(res => setMyCommentCount(res.data.comment_count))
+    .catch(() => setMyCommentCount(0));
+}, []);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/recipes/${id}`)
@@ -21,16 +29,16 @@ const RecipesDetails = ({ auth }) => {
   }, [id]);
 
   const fetchComments = async () => {
-  try {
-    const response = await axios.get(
-      `http://localhost:3001/recipes/${id}/comments`,
-      { withCredentials: true }
-    );
-    setComments(response.data);
-  } catch (error) {
-    setComments([]);
-  }
-};
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/recipes/${id}/comments`,
+        { withCredentials: true }
+      );
+      setComments(response.data);
+    } catch (error) {
+      setComments([]);
+    }
+  };
 
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
@@ -100,6 +108,37 @@ const RecipesDetails = ({ auth }) => {
                 style={{ maxHeight: 350, objectFit: 'cover' }}
               />
               <div className="card-body">
+                {/* --- ΕΔΩ ΠΡΟΣΤΕΘΗΚΕ Η ΕΜΦΑΝΙΣΗ ΤΩΝ ΣΤΟΙΧΕΙΩΝ ΤΗΣ ΣΥΝΤΑΓΗΣ --- */}
+                <div className="d-flex align-items-center mb-3">
+                  <h1 className="card-title mb-0 flex-grow-1 fw-bold">{recipe.title}</h1>
+                  <span className="badge bg-warning text-dark ms-2 fs-6">
+                    <i className="bi bi-star-fill"></i> {recipe.rating}
+                  </span>
+                </div>
+                <div className="mb-2 text-muted">
+                  <span className="me-3"><i className="bi bi-clock"></i> {recipe.prep_time} λεπτά</span>
+                  <span className="me-3"><i className="bi bi-bar-chart"></i> {recipe.difficulty}</span>
+                  {recipe.categories && recipe.categories.map(tag => (
+                    <span key={tag} className="badge bg-light text-dark border ms-1">{tag}</span>
+                  ))}
+                </div>
+                <p className="lead mt-3">{recipe.description}</p>
+                <hr />
+                <h5 className="fw-bold">Υλικά</h5>
+                <ul className="mb-4">
+                  {recipe.ingredients && recipe.ingredients.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+                <h5 className="fw-bold">Οδηγίες Εκτέλεσης</h5>
+                <ol>
+                  {recipe.instructions && recipe.instructions.map((step, idx) => (
+                    <li key={idx} className="mb-2">{step}</li>
+                  ))}
+                </ol>
+                {/* --- ΤΕΛΟΣ ΠΡΟΣΘΗΚΗΣ --- */}
+
+                {/* Σύστημα Σχολίων */}
                 <div className="mt-5">
                   <h4 className="mb-4 border-bottom pb-2">Σχόλια ({comments.length})</h4>
                   
@@ -126,7 +165,8 @@ const RecipesDetails = ({ auth }) => {
                       <div key={comment.comment_id} className="card mb-3">
                         <div className="card-body">
                           <div className="d-flex justify-content-between align-items-center mb-2">
-                            <h6 className="card-subtitle text-muted">{comment.username}</h6>
+                            <h6 className="card-subtitle text-muted">{comment.username}{auth?.user?.id === comment.user_id && myCommentCount > 10 && 
+                            (<FaStar color="#FFD700" title="Έχεις πάνω από 10 σχόλια!" style={{ marginLeft: 6 }} />)}</h6>
                             <small className="text-muted">
                               {new Date(comment.created_at).toLocaleDateString('el-GR', {
                                 year: 'numeric',

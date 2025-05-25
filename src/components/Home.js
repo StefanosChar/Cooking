@@ -8,7 +8,11 @@ import { Carousel } from "react-responsive-carousel";
 const carouselImages = [
   'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
   'https://images.unsplash.com/photo-1550547660-d9450f859349',
-  'https://images.unsplash.com/photo-1502741338009-cac2772e18bc'
+  'https://images.unsplash.com/photo-1502741338009-cac2772e18bc',
+  '/ChickenStrips.webp',
+  '/MilfeigIcecream.webp',
+  '/ScreenshotDubaiChocolate.webp',
+  '/Soublakia.webp'
 ];
 
 const Home = ({ auth }) => (
