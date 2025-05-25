@@ -342,7 +342,6 @@ app.post('/users/:id/change-password', authMiddleware, async (req, res) => {
   }
 });
 
-// Ανάκτηση εβδομαδιαίου προγράμματος (GET)
 app.get('/weekly-plans', authMiddleware, async (req, res) => {
   const userId = req.session.user.id;
   try {
@@ -367,7 +366,6 @@ app.get('/weekly-plans', authMiddleware, async (req, res) => {
   }
 });
 
-// Αποθήκευση εβδομαδιαίου προγράμματος (POST)
 app.post('/weekly-plans', authMiddleware, async (req, res) => {
   const userId = req.session.user.id;
   const { meals } = req.body;
