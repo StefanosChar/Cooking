@@ -272,6 +272,29 @@ app.get('/recipes/:id/comments', async (req, res) => {
   }
 });
 
+app.post('/recipes/:id/comments', authMiddleware, async (req, res) => {
+  const recipeId = req.params.id;
+  const userId = req.session.user.id;
+  const { comment_text } = req.body;
+
+  if (!comment_text || !comment_text.trim()) {
+    return res.status(400).json({ error: 'Το σχόλιο δεν μπορεί να είναι κενό.' });
+  }
+
+  try {
+    await pool.query(
+      `INSERT INTO comments (recipe_id, user_id, comment_text, created_at)
+       VALUES (?, ?, ?, NOW())`,
+      [recipeId, userId, comment_text]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Σφάλμα αποθήκευσης σχολίου' });
+  }
+});
+
+
 app.get('/users/:id/comments', async (req, res) => {
   const userId = req.params.id;
   try {
@@ -319,8 +342,65 @@ app.post('/users/:id/change-password', authMiddleware, async (req, res) => {
   }
 });
 
+// Ανάκτηση εβδομαδιαίου προγράμματος (GET)
+app.get('/weekly-plans', authMiddleware, async (req, res) => {
+  const userId = req.session.user.id;
+  try {
+    const [plans] = await pool.query(
+      `SELECT plan_id FROM weekly_plans WHERE user_id = ? ORDER BY created_at DESC LIMIT 1`,
+      [userId]
+    );
+    if (plans.length === 0) return res.json({ meals: {} });
 
+    const planId = plans[0].plan_id;
+    const [meals] = await pool.query(
+      `SELECT day, meal_type, recipe_id FROM plan_meals WHERE plan_id = ?`,
+      [planId]
+    );
+    const formattedMeals = meals.reduce((acc, meal) => {
+      acc[`${meal.day}-${meal.meal_type}`] = meal.recipe_id;
+      return acc;
+    }, {});
+    res.json({ meals: formattedMeals });
+  } catch (error) {
+    res.status(500).json({ error: 'Σφάλμα φόρτωσης προγράμματος' });
+  }
+});
 
+// Αποθήκευση εβδομαδιαίου προγράμματος (POST)
+app.post('/weekly-plans', authMiddleware, async (req, res) => {
+  const userId = req.session.user.id;
+  const { meals } = req.body;
+  try {
+    const [plan] = await pool.query(
+      'INSERT INTO weekly_plans (user_id) VALUES (?)',
+      [userId]
+    );
+    const planId = plan.insertId;
+    const mealEntries = Object.entries(meals).map(([key, recipeId]) => {
+      const [day, mealType] = key.split('-');
+      return [planId, day, mealType, recipeId];
+    });
+    if (mealEntries.length > 0) {
+      await pool.query(
+        'INSERT INTO plan_meals (plan_id, day, meal_type, recipe_id) VALUES ?',
+        [mealEntries]
+      );
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Σφάλμα αποθήκευσης προγράμματος' });
+  }
+});
+
+app.get('/my-comment-count', authMiddleware, async (req, res) => {
+  const userId = req.session.user.id;
+  const [rows] = await pool.query(
+    'SELECT COUNT(*) AS comment_count FROM comments WHERE user_id = ?',
+    [userId]
+  );
+  res.json({ comment_count: rows[0].comment_count });
+});
 
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {
